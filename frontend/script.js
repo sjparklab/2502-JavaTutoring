@@ -10,7 +10,6 @@ function setLoading(element, isLoading, originalText) {
   }
 }
 
-// 학생 목록 불러오기
 async function loadStudents() {
   try {
     const res = await fetch(apiBase);
@@ -70,7 +69,6 @@ async function loadStudents() {
   }
 }
 
-// 학생 추가
 function initializeForm() {
   document.getElementById('studentForm').addEventListener('submit', async e => {
     e.preventDefault();
@@ -108,7 +106,6 @@ function initializeForm() {
   });
 }
 
-// 학생 수정
 async function updateStudent(id) {
   const updateButton = document.getElementById(`update-btn-${id}`);
   setLoading(updateButton, true, '수정');
@@ -140,7 +137,6 @@ async function updateStudent(id) {
   }
 }
 
-// 학생 삭제
 async function deleteStudent(id) {
   if (!confirm('정말로 이 학생을 삭제하시겠습니까?')) {
     return;
@@ -167,7 +163,6 @@ async function deleteStudent(id) {
   }
 }
 
-// 성공 메시지 표시
 function showSuccess(button, message, originalText) {
   const originalBg = button.style.background;
   button.style.background = 'linear-gradient(135deg, #00b894 0%, #00cec9 100%)';
@@ -178,7 +173,6 @@ function showSuccess(button, message, originalText) {
   }, 2000);
 }
 
-// 에러 메시지 표시
 function showError(button, message, originalText) {
   const originalBg = button.style.background;
   button.style.background = 'linear-gradient(135deg, #e17055 0%, #d63031 100%)';
@@ -189,7 +183,6 @@ function showError(button, message, originalText) {
   }, 2000);
 }
 
-// 초기화
 document.addEventListener('DOMContentLoaded', () => {
   initializeForm();
   loadStudents();
