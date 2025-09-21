@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>간단한 학생 관리</title>
+</head>
+<body>
+    <h1>학생 관리 시스템</h1>
+    
+    <h2>학생 추가</h2>
+    <form id="addForm">
+        <p>이름: <input type="text" id="addName" required></p>
+        <p>학번: <input type="text" id="addNumber"></p>
+        <p>전공: <input type="text" id="addMajor"></p>
+        <p>학년: <input type="number" id="addYear" min="1" max="4"></p>
+        <button type="submit">학생 추가</button>
+    </form>
+    
+    <hr>
+    
+    <h2>학생 목록</h2>
+    <button onclick="getStudents()">목록 조회</button>
+    <div id="studentList"></div>
+    
+    <hr>
+    
+    <h2>특정 학생 조회</h2>
+    <input type="number" id="getStudentId" value="1" min="1">
+    <button onclick="getStudent()">조회</button>
+    <div id="studentInfo"></div>
+    
+    <hr>
+    
+    <h2>학생 수정</h2>
+    <form id="updateForm">
+        <p>수정할 ID: <input type="number" id="updateId" value="1" min="1"></p>
+        <p>이름: <input type="text" id="updateName"></p>
+        <p>학번: <input type="text" id="updateNumber"></p>
+        <p>전공: <input type="text" id="updateMajor"></p>
+        <p>학년: <input type="number" id="updateYear" min="1" max="4"></p>
+        <button type="submit">수정하기</button>
+    </form>
+    
+    <hr>
+    
+    <h2>학생 삭제</h2>
+    <input type="number" id="deleteStudentId" value="1" min="1">
+    <button onclick="deleteStudent()">삭제</button>
+    
+    <script>
+        const API_BASE = '/students';
+        
+        document.getElementById('addForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch(API_BASE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentName: document.getElementById('addName').value,
+                        studentNumber: document.getElementById('addNumber').value,
+                        studentMajor: document.getElementById('addMajor').value,
+                        studentYear: document.getElementById('addYear').value
+                    })
+                });
+                
+                const data = await response.json();
+                alert('학생이 추가되었습니다!');
+                document.getElementById('addForm').reset();
+            } catch (error) {
+                alert('오류가 발생했습니다: ' + error);
+            }
+        });
+
+        async function getStudents() {
+            try {
+                const response = await fetch(API_BASE);
+                const students = await response.json();
+                
+                let html = '<h3>학생 목록:</h3>';
+                for (let i = 0; i < students.length; i++) {
+                    const student = students[i];
+                    html += '<p>ID: ' + student.id + 
+                           ', 이름: ' + student.studentName + 
+                           ', 학번: ' + student.studentNumber + 
+                           ', 전공: ' + student.studentMajor + 
+                           ', 학년: ' + student.studentYear + '</p>';
+                }
+                document.getElementById('studentList').innerHTML = html;
+            } catch (error) {
+                alert('오류가 발생했습니다: ' + error);
+            }
+        }
+
+        async function getStudent() {
+            const id = document.getElementById('getStudentId').value;
+            
+            try {
+                const response = await fetch(API_BASE + '/' + id);
+                const student = await response.json();
+                
+                const html = '<h3>학생 정보:</h3>' +
+                          '<p>ID: ' + student.id + '</p>' +
+                          '<p>이름: ' + student.studentName + '</p>' +
+                          '<p>학번: ' + student.studentNumber + '</p>' +
+                          '<p>전공: ' + student.studentMajor + '</p>' +
+                          '<p>학년: ' + student.studentYear + '</p>';
+                document.getElementById('studentInfo').innerHTML = html;
+            } catch (error) {
+                alert('학생을 찾을 수 없습니다.');
+            }
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('updateId').value;
+            
+            try {
+                const response = await fetch(API_BASE + '/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentName: document.getElementById('updateName').value,
+                        studentNumber: document.getElementById('updateNumber').value,
+                        studentMajor: document.getElementById('updateMajor').value,
+                        studentYear: document.getElementById('updateYear').value
+                    })
+                });
+                
+                const data = await response.json();
+                alert('학생 정보가 수정되었습니다!');
+            } catch (error) {
+                alert('오류가 발생했습니다: ' + error);
+            }
+        });
+
+        async function deleteStudent() {
+            const id = document.getElementById('deleteStudentId').value;
+            
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                try {
+                    await fetch(API_BASE + '/' + id, {
+                        method: 'DELETE'
+                    });
+                    alert('학생이 삭제되었습니다!');
+                } catch (error) {
+                    alert('오류가 발생했습니다: ' + error);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

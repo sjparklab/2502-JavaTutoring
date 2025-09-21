@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학생 관리 시스템</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 학생 관리 시스템</h1>
+      <p>효율적인 학생 정보 관리를 위한 통합 솔루션</p>
+    </div>
+
+    <!-- 학생 추가 카드 -->
+    <div class="card fade-in">
+      <div class="card-header">
+        ✨ 새 학생 등록
+      </div>
+      <div class="card-body">
+        <form id="studentForm">
+          <div class="form-grid">
+            <div class="input-group">
+              <input type="text" id="name" placeholder=" " required>
+              <label>이름</label>
+            </div>
+            <div class="input-group">
+              <input type="text" id="number" placeholder=" ">
+              <label>학번</label>
+            </div>
+            <div class="input-group">
+              <input type="text" id="major" placeholder=" ">
+              <label>전공</label>
+            </div>
+            <div class="input-group">
+              <input type="number" id="year" placeholder=" " min="1" max="4">
+              <label>학년</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span id="addButtonText">학생 추가</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 학생 목록 카드 -->
+    <div class="card fade-in">
+      <div class="card-header">
+        📚 학생 목록
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>이름</th>
+                <th>학번</th>
+                <th>전공</th>
+                <th>학년</th>
+                <th>관리</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody">
+              <!-- 학생 데이터가 여기에 로드됩니다 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
